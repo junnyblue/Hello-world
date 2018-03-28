@@ -1,0 +1,152 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+	<head>
+		<title>验证框架测试</title>
+
+		<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+		<meta http-equiv="description" content="this is my page">
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+		<!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
+		<script type="text/javascript" src="scripts/jquery-1.7.2.min.js">
+</script>
+		<script type="text/javascript" src="koala-1.0.js">
+</script>
+		<script type="text/javascript" src="koala.validate-1.0.js"
+			charset="UTF-8">
+</script>
+		<script type="text/javascript" src="tset_validation.js">
+</script>
+		<script type="text/javascript">
+$(function() {
+	$("#ignore").click(function() {
+		$("div#body *").ignore();
+	});
+
+	$("#t1").ignore();
+
+	$("#btn").click(function() {
+		if ($("div#body *").validate()) {
+			alert("OK");
+		}
+	});
+	$("#reset").click(function() {
+		$("div#body *").reset( {
+			handler : function(elem) {
+				$(elem).alive();
+				switch (elem.id) {
+				case "habits":
+					$(elem).ignore();
+					break;
+				case "pwd":
+					$(elem).ignore("digits");
+					break;
+				case "c1":
+					elem.checked = true;
+					$(elem).change();
+					break;
+				case "t1":
+					$(elem).ignore();
+					$(elem).html("");
+					break;
+				}
+
+			}
+		});
+	});
+	$("#c1").change(function() {
+		var isChecked = $(this).attr("checked");
+		if (isChecked) {
+			$("#t1").reset().attr("disabled", true);
+			$("#t1").ignore();
+		} else {
+			$('#t1').removeAttr("disabled");
+			$("#t1").alive();
+		}
+	});
+});
+</script>
+		<script type="text/javascript">
+//alert($.validation.hanlders["required"].call(window, "a"));
+</script>
+	</head>
+
+	<body>
+		<div id="body">
+			用户名:
+			<input id="username" class="maxsize" max="10" data-title="名字"
+				required>
+			<br>
+			<label for="age">
+				年龄:
+			</label>
+
+			<input id="age" class="required digits range" maxvalue="80"
+				minvalue="1">
+			<br>
+			<label for="pwd">
+				密码:
+			</label>
+			<input id="pwd" type="password" class="required digits">
+			<br />
+			<label for="comfirm-pwd">
+				确认密码:
+			</label>
+			<input id="comfirm-pwd" class="required equalTo" equals="#pwd"
+				type="password" msg="comfirm-pwdErrorMsg">
+			<span id="comfirm-pwdErrorMsg"></span>
+			<br />
+			邮箱:
+			<input id="email" class="required email" type="text" data-title="邮箱">
+			<br />
+			<label for="fruit">
+				水果:
+			</label>
+			<select id="fruit" required>
+				<option value="0">
+					请选择
+				</option>
+				<option value="1">
+					香蕉
+				</option>
+				<option value="2">
+					苹果
+				</option>
+			</select>
+
+			<br />
+			<div id="habits" min-num="2">
+				<label for="habits">
+					爱好 :
+				</label>
+				<label for="reading">
+					读书:
+				</label>
+				<input type="checkbox" name="habit" value="reading" id="reading">
+				<label for="trip">
+					旅游:
+				</label>
+				<input type="checkbox" name="habit" value="trip" id="trip">
+				<label for="swimming">
+					游泳:
+				</label>
+				<input type="checkbox" name="habit" value="swimming" id="swimming">
+				<span id="habits_error_msg"></span>
+			</div>
+			<label for="c1">
+				不写备注：
+			</label>
+			<input type="checkbox" id="c1" checked="checked" />
+			<br>
+			<label for="t1">
+				备注:
+			</label>
+			<textarea rows="10" cols="30" id="t1" disabled="disabled"
+				class="required"></textarea>
+			<span id="msg"></span>
+		</div>
+		<input type="button" value="OK" id="btn">
+		<input type="button" value="reset" id="reset">
+		<input type="button" value="ignore all" id="ignore">
+	</body>
+</html>
